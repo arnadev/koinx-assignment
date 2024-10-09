@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express=require('express');
 const connectMongoDb=require('./connection');
 const fetchCoinData=require('./routines/backgroundJob');
@@ -7,7 +9,7 @@ const app=express();
 PORT=8000;
 
 //CONNECTION TO MONGODB
-connectMongoDb('mongodb://127.0.0.1:27017/KoinXassignment')
+connectMongoDb(process.env.MONGODB_URL)
 .then(()=>{console.log('connected to mongodb')})
 .catch((err)=>{console.log('error connecting to mongodb'+err)});
 
@@ -17,6 +19,6 @@ app.use('/',apiRouter);
 //START THE BACKGROUND JOB ROUTINE
 fetchCoinData();
 
-app.listen(PORT,()=>{
+app.listen(process.env.PORT,()=>{
     console.log('server is running PORT: '+PORT);
 })
